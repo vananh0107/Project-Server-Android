@@ -3,6 +3,7 @@ const dbConnect = require('./config/dbConnect');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv').config();
 const cors = require('cors');
+const cookieParser = require("cookie-parser");
 const authRouter = require('./routes/authRoute');
 const productRouter = require('./routes/productRoute');
 const categoryRouter = require('./routes/categoryRoute');
@@ -18,11 +19,12 @@ app.use(
   })
 );
 app.use(morgan('dev'));
+app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/api/user', authRouter);
 app.use('/api/product', productRouter);
-app.use('/api/ategory', categoryRouter);
+app.use('/api/category', categoryRouter);
 app.use('/api/discount', discountRoute);
 app.use('/api/upload', uploadRoute);
 app.use(notFound);

@@ -22,10 +22,6 @@ var productSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Category' 
     },
-    brand: {
-      type: String,
-      require: true,
-    },
     quantity: {
       type: Number,
       required: true,
