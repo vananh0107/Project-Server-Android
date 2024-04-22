@@ -42,7 +42,7 @@ const deleteCategory = asyncHandler(async (req, res) => {
   const { id } = req.params;
   try {
     const deleteCategory = await Category.findByIdAndDelete(id);
-    res.json("Delete successfully!!!");
+    res.json('Delete successfully!!!');
   } catch (err) {
     throw new Error(err);
   }

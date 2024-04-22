@@ -1,38 +1,102 @@
-.App {
-  text-align: center;
+body{
+  font-family: "Roboto",sans-serif;
+  overflow-x: hidden;
 }
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+:root{
+  --color-212529:#212529;
+  --color-ffd333:#ffd333;
+  --color-47ad24:#47ad24;
+  --color-e52e2e:#e52e2e;
+  --color-828599:#828599;
+  --color-3d464d:#3d464d;
+  --color-cde4da:#cde4da;
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.red{
+  color:var(--color-e52e2e);
+  font-family: Roboto !important;
+  font-style: 14px;
 }
-
-.App-header {
-  background-color: #282c34;
+.green{
+  color:var(--color-47ad24);
+  font-family: Roboto !important;
+  font-style: 14px;
+}
+.error{
+  color:var(--color-e52e2e);
+  /* margin-left: 20px;
+  margin:-16px 10px 24px 0; */
+  font-size: 12px;
+}
+/*css layout*/
+.ant-layout{
   min-height: 100vh;
+}
+.ant-layout-sider {
+  flex: 0 0 250px !important;
+    max-width: 250px !important;
+    min-width: 250px !important;
+    width: 250px !important;
+}
+.ant-layout-sider-collapsed{
+  flex: 0 0 80px !important;
+  max-width: 80px !important;
+  min-width: 80px !important;
+  width: 80px !important;
+}
+.lg-logo{
+  display: none;
+}
+.ant-layout-sider-collapsed .lg-logo{
+  display: block;
+}
+.ant-layout-sider-collapsed .sm-logo{
+  display: none;
+}
+.logo{
+  background-color: #ffd333;
+  height: 64px;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
-
-.App-link {
-  color: #61dafb;
+.ant-layout-header h5{
+  line-height: 20px;
+  font-size: 14px;
 }
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.ant-layout-header p{
+  line-height: 20px;
+  font-size: 13px;
+}
+main{
+  background-color: transparent !important;
+}
+.ant-layout-header div .badge{
+ top:16px;
+ right: -6px;
+}
+.form-control{
+  box-shadow: none;
+  border-color: var(--color-cde4da);
+}
+.title{
+  font-size: 28px;
+  font-family: Roboto !important;
+  color:var(--color-212529);
+}
+.sub-title{
+  font-size: 24px;
+  font-family: Roboto !important;
+  color:var(--color-212529);
+}
+.desc{
+  font-size: 24px;
+  font-family: Roboto !important;
+  color:var(--color-828599);
+}
+.ant-select-selector{
+  height: 54px !important;
+}
+.ant-tag{
+  height: 36px;
+    display: flex;
+    align-items: center;
 }

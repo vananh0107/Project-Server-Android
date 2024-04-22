@@ -14,7 +14,7 @@ const uploadImages = asyncHandler(async (req, res) => {
     for (const file of files) {
       const { path } = file;
       const newpath = await uploader(path);
-      urls.push({ url: newpath.url, puclicId: newpath.public_id });
+      urls.push({ url: newpath.url, publicId: newpath.public_id });
       fs.unlinkSync(path);
     }
     res.json(urls);
@@ -25,8 +25,8 @@ const uploadImages = asyncHandler(async (req, res) => {
 const deleteImages = asyncHandler(async (req, res) => {
   const { id } = req.params;
   try {
-    let images = [];
-    const deleted = await cloudinaryDeleteImg(id, 'images');
+    const deleted = await cloudinaryDeleteImg(id);
+    console.log(deleted)
     res.json("delete successfully");
   } catch (error) {
     throw new Error(error);

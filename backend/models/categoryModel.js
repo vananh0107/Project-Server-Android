@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
-const imageSchema = new mongoose.Schema({
+const ImageSchema = new mongoose.Schema({
   url: String,
-  publicId: String,
+  publicId: String
 });
 var categorySchema = new mongoose.Schema(
   {
@@ -10,14 +10,7 @@ var categorySchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-    image: {
-      type: imageSchema,
-      required: true,
-    },
-    description: {
-      type: String,
-      required: true,
-    }
+    image: ImageSchema
   },
   {
     timestamps: true,

@@ -3,7 +3,11 @@ const Category = require('../models/categoryModel');
 const asyncHandler = require('express-async-handler');
 const createProduct = asyncHandler(async (req, res) => {
   try {
-    const newProduct = await Product.create(req.body);
+    const categoryID = await Category.find({ name: req.body.category });
+    req.body.category = categoryID[0]._id;
+    let { image, ...data } = req.body;
+    data.images = [image];
+    const newProduct = await Product.create(data);
     res.json(newProduct);
   } catch (err) {
     throw new Error(err);
@@ -23,7 +27,7 @@ const deleteProduct = asyncHandler(async (req, res) => {
   const { id } = req.params;
   try {
     const deleteProduct = await Product.findByIdAndDelete(id);
-    res.json("Delete successfully");
+    res.json('Delete successfully');
   } catch (err) {
     throw new Error(err);
   }
@@ -32,10 +36,12 @@ const deleteProduct = asyncHandler(async (req, res) => {
 const updateProduct = asyncHandler(async (req, res) => {
   const { id } = req.params;
   try {
-    if (req.body.title) {
-      req.body.slug = slugify(req.body.title);
-    }
-    const updateProduct = await Product.findByIdAndUpdate(id, req.body, {
+    const categoryID = await Category.find({ name: req.body.category });
+    req.body.category = categoryID[0]._id;
+    let { image, ...data } = req.body;
+    if (image == 'delete successfully') data.images = [];
+    else data.images = [image];
+    const updateProduct = await Product.findByIdAndUpdate(id, data, {
       new: true,
     });
     res.json('Update successfully');
@@ -85,10 +91,10 @@ const getAllProduct = asyncHandler(async (req, res) => {
     throw new Error(err);
   }
 });
-const getProductByCategory=asyncHandler(async (req, res) => {
+const getProductByCategory = asyncHandler(async (req, res) => {
   const { id } = req.params;
   try {
-    const product = await Product.find({category:id});
+    const product = await Product.find({ category: id });
     res.json(product);
   } catch (err) {
     throw new Error(err);
@@ -126,5 +132,5 @@ module.exports = {
   updateProduct,
   deleteProduct,
   getQuantityProductCat,
-  getProductByCategory
+  getProductByCategory,
 };
