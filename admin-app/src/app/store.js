@@ -4,7 +4,7 @@ import producReducer from './features/product/productSlice';
 import enquiryReducer from './features/enquiry/EnquirySlice';
 import orderReducer from './features/order/OrderSlice';
 import uploadReducer from './features/upload/uploadSlice';
-import couponReducer from './features/coupon/couponSlice';
+import discountReducer from './features/discount/discountSlice';
 export const store = configureStore({
   reducer: {
     auth: authReducer,
@@ -12,7 +12,7 @@ export const store = configureStore({
     enquiry: enquiryReducer,
     order: orderReducer,
     upload: uploadReducer,
-    coupon: couponReducer,
+    discount: discountReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

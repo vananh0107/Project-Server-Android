@@ -1,149 +1,150 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { couponService } from './couponService';
+import { discountService } from './discountService';
 import { toast } from 'react-toastify';
 const initialState = {
-  coupon: [],
+  discount: {},
+  listDiscount: [],
   isError: false,
   isSuccess: false,
   message: '',
 };
-export const getAllCoupon = createAsyncThunk('coupon/get', async (thunkAPI) => {
+export const getAllDiscount = createAsyncThunk('discount/get', async (thunkAPI) => {
   try {
-    return await couponService.getCoupon();
+    return await discountService.getDiscount();
   } catch (error) {
     return thunkAPI.rejectWithValue(error);
   }
 });
-export const createCoupon = createAsyncThunk(
-  'coupon/create',
+export const createDiscount = createAsyncThunk(
+  'discount/create',
   async (data, thunkAPI) => {
     try {
-      return await couponService.addCoupon(data);
+      return await discountService.addDiscount(data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
   }
 );
-export const updateCoupon = createAsyncThunk(
-  'coupon/update',
+export const updateDiscount = createAsyncThunk(
+  'discount/update',
   async (data, thunkAPI) => {
     try {
-      return await couponService.changeCoupon(data);
+      return await discountService.changeDiscount(data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
   }
 );
-export const deleteCoupon = createAsyncThunk(
-  'coupon/delete',
+export const deleteDiscount = createAsyncThunk(
+  'discount/delete',
   async (data, thunkAPI) => {
     try {
-      return await couponService.deleteCounpon(data);
+      return await discountService.deleteDiscount(data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
   }
 );
-export const getSingleCoupon = createAsyncThunk(
-  'coupon/getSingle',
+export const getSingleDiscount = createAsyncThunk(
+  'discount/getSingle',
   async (id, thunkAPI) => {
     try {
-      return await couponService.getACoupon(id);
+      return await discountService.getADiscount(id);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
   }
 );
 export const authSlice = createSlice({
-  name: 'coupon',
+  name: 'discount',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(createCoupon.pending, (state) => {
+      .addCase(createDiscount.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(createCoupon.fulfilled, (state, action) => {
+      .addCase(createDiscount.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = false;
         state.isSuccess = true;
-        state.coupon = action.payload;
+        state.discount = action.payload;
         if (state.isSuccess === true) {
-          toast.success('Coupon added');
+          toast.success('Discount added');
         }
       })
-      .addCase(createCoupon.rejected, (state, action) => {
+      .addCase(createDiscount.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
-        state.coupon = null;
+        state.discount = null;
         if (state.isError === true) {
-          toast.error('Coupon add fail');
+          toast.error('Discount add fail');
         }
       })
-      .addCase(getAllCoupon.pending, (state) => {
+      .addCase(getAllDiscount.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getAllCoupon.fulfilled, (state, action) => {
+      .addCase(getAllDiscount.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = false;
         state.isSuccess = true;
-        state.listCoupon = action.payload;
+        state.listDiscount = action.payload;
       })
-      .addCase(getAllCoupon.rejected, (state, action) => {
+      .addCase(getAllDiscount.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
-        state.listCoupon = null;
+        state.listDiscount = null;
       })
-      .addCase(deleteCoupon.pending, (state) => {
+      .addCase(deleteDiscount.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(deleteCoupon.fulfilled, (state, action) => {
+      .addCase(deleteDiscount.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = false;
         state.isSuccess = true;
-        state.deleteCoupon = action.payload;
+        state.deleteDiscount = action.payload;
         if (state.isSuccess) toast.success('Delete successfully');
       })
-      .addCase(deleteCoupon.rejected, (state, action) => {
+      .addCase(deleteDiscount.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
-        state.deleteCoupon = null;
+        state.deleteDiscount = null;
         if (state.isError) toast.error('Delete error');
       })
-      .addCase(updateCoupon.pending, (state) => {
+      .addCase(updateDiscount.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(updateCoupon.fulfilled, (state, action) => {
+      .addCase(updateDiscount.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = false;
         state.isSuccess = true;
-        state.updateCoupon = action.payload;
+        state.updateDiscount = action.payload;
         if (state.isSuccess) toast.success('Update successfully');
       })
-      .addCase(updateCoupon.rejected, (state, action) => {
+      .addCase(updateDiscount.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
-        state.updateCoupon = null;
+        state.updateDiscount = null;
         if (state.isError) toast.error('Update error');
       })
-      .addCase(getSingleCoupon.pending, (state) => {
+      .addCase(getSingleDiscount.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getSingleCoupon.fulfilled, (state, action) => {
+      .addCase(getSingleDiscount.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = false;
         state.isSuccess = true;
-        state.getACoupon = action.payload;
+        state.discount = action.payload;
       })
-      .addCase(getSingleCoupon.rejected, (state, action) => {
+      .addCase(getSingleDiscount.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
-        state.getACoupon = null;
+        state.discount = null;
       });
   },
 });

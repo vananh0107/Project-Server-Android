@@ -9,8 +9,8 @@ import Orders from './pages/Order';
 import Customers from './pages/Customers';
 import Productlist from './pages/Productlist';
 import Categorylist from './pages/Categorylist';
-import Couponlist from './pages/Counponlist';
-import AddCounpon from './pages/Addcounpon';
+import Discountlist from './pages/Discountlist';
+import Adddiscount from './pages/Adddiscount';
 import Addcat from './pages/Addcat';
 import Addproduct from './pages/Addproduct';
 import DetailOrder from './pages/DetailOrder';
@@ -27,11 +27,11 @@ function App() {
           <Route path="customers" element={<Customers />} />
           <Route path="product-list/:id" element={<Addproduct />} />
           <Route path="product-list" element={<Productlist />} />
-          <Route path="coupon-list" element={<Couponlist />} />
-          <Route path="coupon" element={<AddCounpon />} />
+          <Route path="discount-list" element={<Discountlist />} />
           <Route path="category-list" element={<Categorylist />} />
           <Route path="category-list/:id" element={<Addcat />} />
-          <Route path="coupon-list/:id" element={<AddCounpon />} />
+          <Route path="discount-list/:id" element={<Adddiscount />} />
+          <Route path="discount" element={<Adddiscount />} />
           <Route path="category" element={<Addcat />} />
           <Route path="product" element={<Addproduct />} />
         </Route>
