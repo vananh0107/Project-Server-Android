@@ -17,8 +17,18 @@ const logout = async () => {
     return response.data;
   }
 };
+const author = async (data) => {
+  const response = await axios.put(
+    `${base_url}user/role/${data.id}`,
+    data.data,
+    config
+  );
+  if (response.data) {
+    return response.data;
+  }
+};
 const getUsers = async () => {
-  const response = await axios.get(`${base_url}user/all-users`, config);
+  const response = await axios.get(`${base_url}user/all-user`, config);
   if (response.data) {
     return response.data;
   }
@@ -41,4 +51,5 @@ export const authService = {
   getMonthOrder,
   getYearOrder,
   logout,
+  author
 };

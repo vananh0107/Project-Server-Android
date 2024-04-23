@@ -49,6 +49,16 @@ export const getAllUser = createAsyncThunk(
     }
   }
 );
+export const delegate = createAsyncThunk(
+  'auth/delegate',
+  async (data,thunkAPI) => {
+    try {
+      return await authService.author(data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
@@ -99,7 +109,7 @@ export const authSlice = createSlice({
         state.isSuccess = false;
         state.listUser = null;
         if (state.isError === true) {
-          toast.error('Email or passwor is false');
+          toast.error('Error get all user');
         }
       })
       .addCase(getMonthOrder.pending, (state) => {
@@ -131,6 +141,21 @@ export const authSlice = createSlice({
         state.isError = true;
         state.isSuccess = false;
         state.yearTotal = null;
+      })
+      .addCase(delegate.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(delegate.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+        toast.success('Update role successfully');
+      })
+      .addCase(delegate.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.isSuccess = false;
+        toast.error('Error update role');
       })
       .addCase(resetState, () => initialState);
   },

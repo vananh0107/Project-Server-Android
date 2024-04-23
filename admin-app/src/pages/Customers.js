@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Table } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllUser } from '../app/features/auth/authSlice';
+import { delegate, getAllUser } from '../app/features/auth/authSlice';
 const Customers = () => {
   const columns = [
     {
@@ -18,8 +18,8 @@ const Customers = () => {
       dataIndex: 'email',
     },
     {
-      title: 'Mobile',
-      dataIndex: 'mobile',
+      title: 'Role',
+      dataIndex: 'role',
     },
   ];
   const dataTable = [];
@@ -34,13 +34,35 @@ const Customers = () => {
   };
   const dispatch = useDispatch();
   const { listUser } = useSelector((state) => state.auth);
+  const setRole = (e, i) => {
+    const data = { id: i, data: { role: e } };
+    console.log(data)
+    dispatch(delegate(data));
+  };
   for (let i = 0; i < listUser?.length; i++) {
     if (listUser[i].role !== 'admin') {
       dataTable.push({
         id: i,
         name: listUser[i].firstname + ' ' + listUser[i].lastname,
         email: listUser[i].email,
-        mobile: listUser[i].mobile,
+        role:(
+          <>
+            <select
+              name=""
+              defaultValue={
+                listUser[i].role ? listUser[i].role : 'user'
+              }
+              className="form-control form-select"
+              id=""
+              onChange={(e) => setRole(e.target.value, listUser[i]._id)}
+            >
+              <option value="user"  selected>
+                User
+              </option>
+              <option value="subadmin">SubAdmin</option>
+            </select>
+          </>
+        ),
       });
     }
   }

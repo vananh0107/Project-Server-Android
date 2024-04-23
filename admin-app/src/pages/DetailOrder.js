@@ -23,7 +23,6 @@ const DetailOrder = () => {
     navigate(-1);
   };
   const setEnquiryStatus = (e, i) => {
-    console.log(e, i);
     const data = { id: i, data: { status: e } };
     dispatch(updateAEnquiry(data));
     setTimeout(() => {
@@ -58,10 +57,16 @@ const DetailOrder = () => {
           </p>
         </div>
         <div className="d-flex align-items-center gap-3">
+          <h6 className="mb-0">Method payment:</h6>
+          <p className="mb-0">
+            {enqState?.shippingInfor?.methodPayment}
+          </p>
+        </div>
+        <div className="d-flex align-items-center gap-3">
           <h6 className="mb-0">Mobile:</h6>
           <p className="mb-0">
-            <a href={`tel:+91${enqState?.shippingInfor?.mobile}`}>
-              {enqState?.shippingInfor?.mobile}
+            <a href={`tel:+91${enqState?.shippingInfor?.phoneNumber}`}>
+              {enqState?.shippingInfor?.phoneNumber}
             </a>
           </p>
         </div>
@@ -85,18 +90,16 @@ const DetailOrder = () => {
           <ol styles={{ listStyleType: 'decimal' }}>
             {enqState?.orderItems?.map((item, index) => (
               <li key={index}>
-                <p className="mx-2">Name: {item?.product?.title}</p>
-                <p className="mx-2">ID: {item?.product?._id}</p>
-                <p className="mx-2">Color: {item?.color}</p>
+                <p className="mx-2">Name: {item?.product?.name}</p>
                 <p className="mx-2">Count: {item?.count}</p>
-                <p className="mx-2">Price: {item?.price}</p>
+                <p className="mx-2">Price: {item?.product?.price}</p>
               </li>
             ))}
           </ol>
         </div>
         <div className="d-flex align-items-center gap-3">
           <h6 className="mb-0">Total price:</h6>
-          <p className="mb-0">{enqState?.totalPriceAfterDiscount}</p>
+          <p className="mb-0">{enqState?.totalPrice}</p>
         </div>
         <div className="d-flex align-items-center gap-3">
           <h6 className="mb-0">Status:</h6>
@@ -126,7 +129,7 @@ const DetailOrder = () => {
           className="btn btn-success border-0 rounded-3 my-5"
           onClick={handleRemoveOrder}
         >
-          Resolved
+          Update
         </button>
       </div>
     </div>

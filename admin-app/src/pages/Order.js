@@ -9,6 +9,7 @@ import {
 } from '../app/features/order/OrderSlice';
 import { Link } from 'react-router-dom';
 import CustomModel from '../components/CustomModel';
+import { BiEdit } from 'react-icons/bi';
 const Order = () => {
   const columns = [
     {
@@ -37,6 +38,10 @@ const Order = () => {
       title: 'Status',
       dataIndex: 'status',
     },
+    {
+      title: 'Action',
+      dataIndex: 'action',
+    },
   ];
   const setEnquiryStatus = (e, i) => {
     const data = { id: i, data: { status: e } };
@@ -52,9 +57,9 @@ const Order = () => {
     dataTable.push({
       key: i + 1,
       name: listOrder[i].user.firstname + ' ' + listOrder[i].user.lastname,
-      price: listOrder[i].totalPriceAfterDiscount,
+      price: listOrder[i].totalPrice,
       product: (
-        <Link to={`/admin/enquiries/${listOrder[i]._id}`}>View Order</Link>
+        <Link to={`/admin/order/${listOrder[i]._id}`}>View Order</Link>
       ),
       date: new Date(listOrder[i].paidAt)
         .toLocaleDateString()
@@ -79,6 +84,21 @@ const Order = () => {
             <option value="Out For Delivery">Out For Delivery</option>
             <option value="Resolved">Resolved</option>
           </select>
+        </>
+      ),
+      action: (
+        <>
+          <Link to={`${listOrder[i]._id}`} className="fs-3">
+            <BiEdit />
+          </Link>
+          <button
+            onClick={() => {
+              showModal(listOrder[i]._id);
+            }}
+            className="fs-3 text-danger ms-3 bg-transparent border-0 mx-4"
+          >
+            <AiFillDelete />
+          </button>
         </>
       ),
     });
@@ -123,7 +143,7 @@ const Order = () => {
         performAction={() => {
           handleRemove(enqId);
         }}
-        title="Are you sure want to delete this brand"
+        title="Are you sure want to delete this order"
       />
     </div>
   );

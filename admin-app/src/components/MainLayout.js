@@ -5,7 +5,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { TbDashboard } from 'react-icons/tb';
 import { FaBlog } from 'react-icons/fa';
 import { ImBlog } from 'react-icons/im';
-import { SiCoinmarketcap } from 'react-icons/si';
 import { FaClipboardList } from 'react-icons/fa';
 import {
   AiFillHdd,
@@ -109,50 +108,6 @@ const MainLayout = () => {
               key: 'orders',
               icon: <AiOutlineShoppingCart className="fs-4" />,
               label: 'Orders',
-            },
-            {
-              key: 'marketing',
-              icon: <SiCoinmarketcap className="fs-4" />,
-              label: 'Marketing',
-              children: [
-                {
-                  key: 'coupon',
-                  icon: <ImBlog className="fs-4" />,
-                  label: 'Add Counpon',
-                },
-                {
-                  key: 'coupon-list',
-                  icon: <FaClipboardList className="fs-4" />,
-                  label: 'Coupon List',
-                },
-              ],
-            },
-            {
-              key: 'blogs',
-              icon: <FaBlog className="fs-4" />,
-              label: 'Blogs',
-              children: [
-                {
-                  key: 'blog',
-                  icon: <ImBlog className="fs-4" />,
-                  label: 'Add Blog',
-                },
-                {
-                  key: 'blog-list',
-                  icon: <FaClipboardList className="fs-4" />,
-                  label: 'Blog List',
-                },
-                {
-                  key: 'blog-category',
-                  icon: <ImBlog className="fs-4" />,
-                  label: 'Add Blog Category',
-                },
-                {
-                  key: 'blog-category-list',
-                  icon: <FaClipboardList className="fs-4" />,
-                  label: 'Blog Category List',
-                },
-              ],
             },
           ]}
         />

@@ -235,6 +235,7 @@ const updateOrderStatus = asyncHandler(async (req, res) => {
 const author = asyncHandler(async (req, res) => {
   const { role } = req.body;
   const { id } = req.params;
+  console.log(req.body,req.params);
   try {
     const { email } = req.user;
     const adminUser = await User.findOne({ email });
@@ -250,7 +251,8 @@ const author = asyncHandler(async (req, res) => {
       );
       res.json('Update successfully');
     }
-    res.json('Update error');
+    else
+      res.json('Update error');
   } catch (err) {
     throw new Error(err);
   }
