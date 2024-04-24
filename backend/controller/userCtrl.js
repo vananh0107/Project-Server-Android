@@ -71,7 +71,7 @@ const userCart = asyncHandler(async (req, res) => {
     let newCart;
     let cartTotal = 0;
     if (alreadyExsistCart) {
-      cartTotal = alreadyExsistCart.cartTotal
+      cartTotal = alreadyExsistCart.cartTotal;
       alreadyExsistCart.products.forEach((product) => {
         products.push(product);
       });
@@ -95,7 +95,7 @@ const userCart = asyncHandler(async (req, res) => {
         object.price = getPrice.price;
         products.push(object);
       }
-      cartTotal += getPrice.price* cart[i].count;
+      cartTotal += getPrice.price * cart[i].count;
     }
     if (alreadyExsistCart) {
       newCart = await Cart.findByIdAndUpdate(
@@ -135,24 +135,25 @@ const removeProductFromCart = asyncHandler(async (req, res) => {
   try {
     const cart = await Cart.findOne({
       orderby: _id,
-    })
+    });
     let i = -1;
     let listProduct = cart.products;
-    console.log(cart)
-    listProduct.forEach( async (item, index) => {
+    console.log(cart);
+    listProduct.forEach(async (item, index) => {
       const productId = item.product.toString();
       if (id == productId) {
         i = index;
       }
     });
-    const productRemove=await Product.findById(id)
-    const totalPriceFinal=cart.cartTotal-productRemove.price*listProduct[i].count
+    const productRemove = await Product.findById(id);
+    const totalPriceFinal =
+      cart.cartTotal - productRemove.price * listProduct[i].count;
     listProduct.splice(i, 1);
     const deleteProductCart = await Cart.findByIdAndUpdate(
       cart._id,
       {
         products: listProduct,
-        cartTotal:totalPriceFinal,
+        cartTotal: totalPriceFinal,
         orderby: _id,
       },
       { new: true }
@@ -167,6 +168,22 @@ const createOrder = asyncHandler(async (req, res) => {
   const { _id } = req.user;
   try {
     const cart = await Cart.findOneAndRemove({ orderby: _id });
+    for (const item of orderItems) {
+      const product = await Product.findById(item.product);
+      if (!product) {
+        throw new Error(`Product with ID ${item.product} not found.`);
+      }
+      if (product.quantity < item.count) {
+        throw new Error(`Insufficient quantity for product ${product.name}.`);
+      }
+    }
+    for (const item of orderItems) {
+      const product = await Product.findById(item.product);
+      const updatedQuantity = product.quantity - item.count;
+      const updatePromise = await Product.findByIdAndUpdate(item.product, {
+        quantity: updatedQuantity,
+      });
+    }
     const order = await Order.create({
       shippingInfor,
       orderItems,
@@ -235,7 +252,7 @@ const updateOrderStatus = asyncHandler(async (req, res) => {
 const author = asyncHandler(async (req, res) => {
   const { role } = req.body;
   const { id } = req.params;
-  console.log(req.body,req.params);
+  console.log(req.body, req.params);
   try {
     const { email } = req.user;
     const adminUser = await User.findOne({ email });
@@ -250,12 +267,217 @@ const author = asyncHandler(async (req, res) => {
         }
       );
       res.json('Update successfully');
-    }
-    else
-      res.json('Update error');
+    } else res.json('Update error');
   } catch (err) {
     throw new Error(err);
   }
+});
+const getMonthIncome = asyncHandler(async (req, res) => {
+  const arrayMonth = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+  let d = new Date();
+  let endDate = '';
+  d.setDate(1);
+  for (let index = 0; index < 11; index++) {
+    d.setMonth(d.getMonth() - 1);
+    endDate = arrayMonth[d.getMonth()] + ' ' + d.getFullYear();
+  }
+  const data = await Order.aggregate([
+    {
+      $match: {
+        paidAt: {
+          $lte: new Date(),
+          $gte: new Date(endDate),
+        },
+      },
+    },
+    {
+      $group: {
+        _id: {
+          $month: '$paidAt',
+        },
+        amount: { $sum: '$totalPrice' },
+        count: { $sum: 1 },
+      },
+    },
+  ]);
+  res.json(data);
+});
+const getYearOrderCount = asyncHandler(async (req, res) => {
+  const arrayMonth = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+  let d = new Date();
+  let endDate = '';
+  d.setDate(1);
+  for (let index = 0; index < 11; index++) {
+    d.setMonth(d.getMonth() - 1);
+    endDate = arrayMonth[d.getMonth()] + ' ' + d.getFullYear();
+  }
+  const data = await Order.aggregate([
+    {
+      $match: {
+        paidAt: {
+          $lte: new Date(),
+          $gte: new Date(endDate),
+        },
+      },
+    },
+    {
+      $group: {
+        _id: {
+          $month: '$paidAt',
+        },
+        count: { $sum: 1 },
+        amount: { $sum: '$totalPrice' },
+      },
+    },
+  ]);
+  res.json(data);
+});
+const getTotalCustomerInMonth = asyncHandler(async (req, res) => {
+  const today = new Date();
+  const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+  const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+  const data = await Order.aggregate([
+    {
+      $match: {
+        paidAt: {
+          $gte: firstDayOfMonth,
+          $lte: lastDayOfMonth,
+        },
+      },
+    },
+    {
+      $group: {
+        _id: '$user',
+      },
+    },
+    {
+      $group: {
+        _id: null,
+        totalCustomers: {
+          $sum: 1,
+        },
+      },
+    },
+  ]);
+  res.json(data);
+});
+const getTotalProductInMonth = asyncHandler(async (req, res) => {
+  const today = new Date();
+  const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+
+  const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+
+  const data = await Order.aggregate([
+    {
+      $match: {
+        paidAt: {
+          $gte: firstDayOfMonth,
+          $lte: lastDayOfMonth,
+        },
+      },
+    },
+    {
+      $unwind: '$orderItems',
+    },
+    {
+      $group: {
+        _id: '$orderItems.product',
+        totalSold: {
+          $sum: '$orderItems.count',
+        },
+      },
+    },
+    {
+      $group: {
+        _id: null,
+        totalQuantitySold: {
+          $sum: '$totalSold',
+        },
+      },
+    },
+  ]);
+  res.json(data);
+});
+const getTopSaleProduct = asyncHandler(async (req, res) => {
+  const today = new Date();
+  const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+  const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+  const data = await Order.aggregate([
+    {
+      $match: {
+        paidAt: {
+          $gte: firstDayOfMonth,
+          $lte: lastDayOfMonth,
+        },
+      },
+    },
+    {
+      $unwind: '$orderItems',
+    },
+    {
+      $group: {
+        _id: '$orderItems.product',
+        totalSold: {
+          $sum: '$orderItems.count',
+        },
+      },
+    },
+    {
+      $lookup: {
+        from: 'products',
+        localField: '_id',
+        foreignField: '_id',
+        as: 'productInfo',
+      },
+    },
+    {
+      $unwind: '$productInfo',
+    },
+    {
+      $project: {
+        _id: 0,
+        productName: '$productInfo.name',
+        productImage: '$productInfo.images',
+        productPrice: '$productInfo.price',
+        totalSold: 1,
+      },
+    },
+    {
+      $sort: {
+        totalSold: -1,
+      },
+    },
+    {
+      $limit: 4,
+    },
+  ]);
+  res.json(data);
 });
 module.exports = {
   createUser,
@@ -271,4 +493,9 @@ module.exports = {
   getOrdersOfUser,
   updateOrderStatus,
   author,
+  getMonthIncome,
+  getYearOrderCount,
+  getTotalCustomerInMonth,
+  getTotalProductInMonth,
+  getTopSaleProduct,
 };

@@ -38,6 +38,36 @@ export const getYearOrder = createAsyncThunk(
     }
   }
 );
+export const getMonthCustomer = createAsyncThunk(
+  'order/month-customer',
+  async (thunkAPI) => {
+    try {
+      return await authService.getMonthCustomer();
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+export const getMonthProduct = createAsyncThunk(
+  'order/month-product',
+  async (thunkAPI) => {
+    try {
+      return await authService.getMonthProduct();
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+export const getTopSaleProduct = createAsyncThunk(
+  'order/month-top-sale-product',
+  async (thunkAPI) => {
+    try {
+      return await authService.getTopSaleProduct();
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
 export const resetState = createAction('Reset_all');
 export const getAllUser = createAsyncThunk(
   'auth/getUsers',
@@ -141,6 +171,51 @@ export const authSlice = createSlice({
         state.isError = true;
         state.isSuccess = false;
         state.yearTotal = null;
+      })
+      .addCase(getMonthCustomer.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getMonthCustomer.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+        state.monthCustomer = action.payload;
+      })
+      .addCase(getMonthCustomer.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.isSuccess = false;
+        state.monthCustomer = null;
+      })
+      .addCase(getMonthProduct.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getMonthProduct.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+        state.monthProduct = action.payload;
+      })
+      .addCase(getMonthProduct.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.isSuccess = false;
+        state.monthProduct = null;
+      })
+      .addCase(getTopSaleProduct.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getTopSaleProduct.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+        state.topSaleProduct = action.payload;
+      })
+      .addCase(getTopSaleProduct.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.isSuccess = false;
+        state.topSaleProduct = null;
       })
       .addCase(delegate.pending, (state) => {
         state.isLoading = true;

@@ -1,24 +1,30 @@
 import React, { useEffect, useState } from 'react';
-import { BsArrowDownRight, BsArrowUpRight } from 'react-icons/bs';
-// import { Column } from '@ant-design/plots';
-import { Table } from 'antd';
+import { AiFillFund, AiFillFlag } from 'react-icons/ai';
+import { BsAwardFill, BsFillPersonFill } from 'react-icons/bs';
+import { Column } from '@ant-design/plots';
 import Order from './Order';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllOrder } from '../app/features/order/OrderSlice';
-import { getMonthOrder, getYearOrder } from '../app/features/auth/authSlice';
+import {
+  getMonthCustomer,
+  getMonthOrder,
+  getMonthProduct,
+  getTopSaleProduct,
+  getYearOrder,
+} from '../app/features/auth/authSlice';
 const Dashboard = () => {
   const [dataMonthly, setDataMonthly] = useState([]);
   const [orderMonthly, setOrderMonthly] = useState([]);
   const [chartsValue, setCharts] = useState('income');
   const config = {
     data: chartsValue === 'income' ? dataMonthly : orderMonthly,
-    xField: 'type',
+    xField: 'month',
     yField: 'sales',
     color: ({ type }) => {
       return '#ffd333';
     },
     label: {
-      position: 'middle',
+      // position: 'middle',
       style: {
         fill: '#FFFFFF',
         opacity: 1,
@@ -31,7 +37,7 @@ const Dashboard = () => {
       },
     },
     meta: {
-      type: {
+      month: {
         alias: 'Month',
       },
       sales: {
@@ -41,11 +47,17 @@ const Dashboard = () => {
   };
   const dispatch = useDispatch();
   const monthTotalData = useSelector((state) => state.auth?.monthTotal);
-  const yearTotalData = useSelector((state) => state.auth?.yearTotal);
+  const monthCustomer = useSelector((state) => state.auth?.monthCustomer);
+  const monthProduct = useSelector((state) => state.auth?.monthProduct);
+  const topSaleProduct = useSelector((state) => state.auth?.topSaleProduct);
+  console.log(topSaleProduct);
   useEffect(() => {
     dispatch(getAllOrder());
     dispatch(getMonthOrder());
     dispatch(getYearOrder());
+    dispatch(getMonthCustomer());
+    dispatch(getMonthProduct());
+    dispatch(getTopSaleProduct());
   }, []);
   const arrayMonth = [
     'January',
@@ -64,16 +76,27 @@ const Dashboard = () => {
   useEffect(() => {
     let dataIncome = [];
     let dataOrder = [];
-    for (let index = 0; index < monthTotalData?.length; index++) {
-      const element = monthTotalData[index];
-      dataIncome.push({
-        type: arrayMonth[element?._id?.month],
-        sales: element?.amount,
-      });
-      dataOrder.push({
-        type: arrayMonth[element?._id?.month],
-        sales: element?.count,
-      });
+    for (let index = 0; index < arrayMonth.length; index++) {
+      if (index < monthTotalData?.length) {
+        const element = monthTotalData[index];
+        dataIncome.push({
+          month: arrayMonth[element?._id],
+          sales: element?.amount,
+        });
+        dataOrder.push({
+          month: arrayMonth[element?._id],
+          sales: element?.count,
+        });
+      } else {
+        dataIncome.push({
+          month: arrayMonth[index],
+          sales: 0,
+        });
+        dataOrder.push({
+          month: arrayMonth[index],
+          sales: 0,
+        });
+      }
     }
     setDataMonthly(dataIncome);
     setOrderMonthly(dataOrder);
@@ -90,30 +113,14 @@ const Dashboard = () => {
           onClick={() => setCharts('income')}
         >
           <div>
+            {' '}
+            <AiFillFund style={{ fontSize: '92px', color: '#1682ff' }} />
+          </div>
+          <div>
             <p>Total sells</p>{' '}
             <p className="mb-0 fs-2">
-              ${yearTotalData && yearTotalData[0]?.amount}
+              {monthTotalData ? monthTotalData[0]?.amount : 0} đ
             </p>
-          </div>
-          <div className="d-flex flex-column align-items-end">
-            <h6 className="green mx-2">
-              <BsArrowUpRight /> 16%
-            </h6>
-            <p>Compare to {arrayMonth[(new Date()).getMonth()]} {new Date().getFullYear()}</p>
-          </div>
-        </div>
-        <div className="d-flex justify-content-between align-items-end flex-grow-1 bg-white p-4 rounded-3">
-          <div>
-            <p>Average order value</p>{' '}
-            <p className="mb-0 fs-2">
-              ${yearTotalData && Math.round(yearTotalData[0]?.avarage)}
-            </p>
-          </div>
-          <div className="d-flex flex-column align-items-end">
-            <h6 className="red mx-2">
-              <BsArrowDownRight /> 29%
-            </h6>
-            <p>Compare to {arrayMonth[(new Date()).getMonth()]} {new Date().getFullYear()}</p>
           </div>
         </div>
         <div
@@ -121,24 +128,80 @@ const Dashboard = () => {
           onClick={handleSetOrder}
         >
           <div>
+            {' '}
+            <AiFillFlag style={{ fontSize: '92px', color: '#24e0bd' }} />
+          </div>
+          <div>
             <p>Total orders</p>{' '}
             <p className="mb-0 fs-2">
-              {yearTotalData && yearTotalData[0]?.count}
+              {monthTotalData ? monthTotalData[0]?.count : 0}
             </p>
           </div>
-          <div className="d-flex flex-column align-items-end">
-            <h6 className="green mx-2">
-              <BsArrowUpRight /> 32%
-            </h6>
-            <p>Compare to {arrayMonth[(new Date()).getMonth()]} {new Date().getFullYear()}</p>
+        </div>
+        <div className="d-flex justify-content-between align-items-end flex-grow-1 bg-white p-4 rounded-3">
+          <div>
+            {' '}
+            <BsFillPersonFill
+              style={{ fontSize: '92px', color: 'rgb(239 114 31)' }}
+            />
+          </div>
+          <div>
+            <p>Total customer</p>{' '}
+            <p className="mb-0 fs-2">
+              {monthCustomer ? monthCustomer[0].totalCustomers : 0}
+            </p>
+          </div>
+        </div>
+        <div className="d-flex justify-content-between align-items-end flex-grow-1 bg-white p-4 rounded-3">
+          <div>
+            {' '}
+            <BsAwardFill
+              style={{ fontSize: '92px', color: 'rgb(136 36 224)' }}
+            />
+          </div>
+          <div>
+            <p>Total proudct</p>{' '}
+            <p className="mb-0 fs-2">
+              {monthProduct ? monthProduct[0]?.totalQuantitySold : 0}
+            </p>
           </div>
         </div>
       </div>
-      <div className="mt-4">
-        <div className="mb-4 fs-4">Income Statics</div>
-        {/* <div>
-          <Column {...config} />
-        </div> */}
+      <div className="mt-4 d-flex justify-content-center gap-3">
+        <div className="col-md-8 bg-white p-4">
+          <p className="mb-4 fs-4">Income Statics</p>
+          <div>
+            <Column {...config} />
+          </div>
+        </div>
+        <div className="col-md-4 bg-white p-4">
+          {' '}
+          <p className="mb-4 fs-4">Top Sales Product</p>
+          <div className="d-flex">
+            <div className="row">
+              {topSaleProduct?.map((product, index) => (
+                <div key={index} className="col-md-6">
+                  <div className="card mb-4">
+                    <img
+                      src={
+                        product.productImage[0] && product.productImage[0].url
+                      }
+                      className="card-img-top"
+                      style={{height:'160px'}}
+                      alt={product.productName}
+                    />
+                    <div className="card-body">
+                      <h5 className="card-title">{product.productName}</h5>
+                      <p className="card-text">
+                        Price: {product.productPrice} đ
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
       <div className="mt-4">
         <div>

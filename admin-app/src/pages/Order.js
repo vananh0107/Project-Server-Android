@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Table } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import { AiFillDelete, AiOutlineEye } from 'react-icons/ai';
+import { AiFillDelete } from 'react-icons/ai';
 import {
   deleteOrder,
   getAllOrder,

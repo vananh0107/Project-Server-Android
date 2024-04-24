@@ -45,11 +45,32 @@ const getYearOrder = async () => {
     return response.data;
   }
 };
+const getMonthCustomer = async () => {
+  const response = await axios.get(`${base_url}user/month-customer`, config);
+  if (response.data) {
+    return response.data;
+  }
+};
+const getMonthProduct = async () => {
+  const response = await axios.get(`${base_url}user/month-product`, config);
+  if (response.data) {
+    return response.data;
+  }
+};
+const getTopSaleProduct=async () => {
+  const response = await axios.get(`${base_url}user/top-product`, config);
+  if (response.data) {
+    return response.data;
+  }
+};
 export const authService = {
   login,
   getUsers,
   getMonthOrder,
   getYearOrder,
   logout,
-  author
+  author,
+  getMonthCustomer,
+  getMonthProduct,
+  getTopSaleProduct
 };

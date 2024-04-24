@@ -13,7 +13,12 @@ const {
   updateOrderStatus,
   author,
   getallUser,
-  deleteOrder
+  deleteOrder,
+  getMonthIncome,
+  getYearOrderCount,
+  getTotalCustomerInMonth,
+  getTotalProductInMonth,
+  getTopSaleProduct
 } = require('../controller/userCtrl');
 const { authMiddleware, isAdmin } = require('../middleware/authMiddleware');
 router.post('/register', createUser);
@@ -26,6 +31,11 @@ router.get('/order/:id', authMiddleware, getOrder);
 router.put('/role/:id', authMiddleware, isAdmin,author);
 router.put('/order/update/:id', authMiddleware, isAdmin, updateOrderStatus);
 router.get('/all-user', authMiddleware, isAdmin, getallUser);
+router.get('/month-order', authMiddleware, isAdmin, getMonthIncome);
+router.get('/year-order', authMiddleware, isAdmin, getYearOrderCount);
+router.get('/month-customer', authMiddleware, isAdmin, getTotalCustomerInMonth);
+router.get('/month-product', authMiddleware, isAdmin, getTotalProductInMonth);
+router.get('/top-product', authMiddleware, isAdmin, getTopSaleProduct);
 router.delete(
   '/delete-product-cart/:id',
   authMiddleware,
