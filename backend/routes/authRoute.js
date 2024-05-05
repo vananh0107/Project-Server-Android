@@ -16,9 +16,10 @@ const {
   deleteOrder,
   getMonthIncome,
   getYearOrderCount,
-  getTotalCustomerInMonth,
-  getTotalProductInMonth,
-  getTopSaleProduct
+  getTotalCustomerInYear,
+  getTotalProductInYear,
+  getTopSaleProduct,
+  momo
 } = require('../controller/userCtrl');
 const { authMiddleware, isAdmin } = require('../middleware/authMiddleware');
 router.post('/register', createUser);
@@ -33,9 +34,10 @@ router.put('/order/update/:id', authMiddleware, isAdmin, updateOrderStatus);
 router.get('/all-user', authMiddleware, isAdmin, getallUser);
 router.get('/month-order', authMiddleware, isAdmin, getMonthIncome);
 router.get('/year-order', authMiddleware, isAdmin, getYearOrderCount);
-router.get('/month-customer', authMiddleware, isAdmin, getTotalCustomerInMonth);
-router.get('/month-product', authMiddleware, isAdmin, getTotalProductInMonth);
+router.get('/year-customer', authMiddleware, isAdmin, getTotalCustomerInYear);
+router.get('/year-product', authMiddleware, isAdmin, getTotalProductInYear);
 router.get('/top-product', authMiddleware, isAdmin, getTopSaleProduct);
+router.post('/momo', momo);
 router.delete(
   '/delete-product-cart/:id',
   authMiddleware,

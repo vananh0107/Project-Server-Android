@@ -358,16 +358,16 @@ const getYearOrderCount = asyncHandler(async (req, res) => {
   ]);
   res.json(data);
 });
-const getTotalCustomerInMonth = asyncHandler(async (req, res) => {
+const getTotalCustomerInYear = asyncHandler(async (req, res) => {
   const today = new Date();
-  const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-  const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+  const firstDayOfYear = new Date(today.getFullYear(), 0, 1); // Lấy ngày đầu tiên của năm hiện tại
+  const lastDayOfYear = new Date(today.getFullYear(), 11, 31); // Lấy ngày cuối cùng của năm hiện tại
   const data = await Order.aggregate([
     {
       $match: {
         paidAt: {
-          $gte: firstDayOfMonth,
-          $lte: lastDayOfMonth,
+          $gte: firstDayOfYear,
+          $lte: lastDayOfYear,
         },
       },
     },
@@ -387,18 +387,18 @@ const getTotalCustomerInMonth = asyncHandler(async (req, res) => {
   ]);
   res.json(data);
 });
-const getTotalProductInMonth = asyncHandler(async (req, res) => {
+const getTotalProductInYear = asyncHandler(async (req, res) => {
   const today = new Date();
-  const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+  const firstDayOfYear = new Date(today.getFullYear(), 0, 1); // Lấy ngày đầu tiên của năm hiện tại
 
-  const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+  const lastDayOfYear = new Date(today.getFullYear(), 11, 31); // Lấy ngày cuối cùng của năm hiện tại
 
   const data = await Order.aggregate([
     {
       $match: {
         paidAt: {
-          $gte: firstDayOfMonth,
-          $lte: lastDayOfMonth,
+          $gte: firstDayOfYear,
+          $lte: lastDayOfYear,
         },
       },
     },
@@ -424,16 +424,17 @@ const getTotalProductInMonth = asyncHandler(async (req, res) => {
   ]);
   res.json(data);
 });
+
 const getTopSaleProduct = asyncHandler(async (req, res) => {
   const today = new Date();
-  const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-  const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+  const firstDayOfYear = new Date(today.getFullYear(), 0, 1); // Lấy ngày đầu tiên của năm hiện tại
+  const lastDayOfYear = new Date(today.getFullYear(), 11, 31); // Lấy ngày cuối cùng của năm hiện tại
   const data = await Order.aggregate([
     {
       $match: {
         paidAt: {
-          $gte: firstDayOfMonth,
-          $lte: lastDayOfMonth,
+          $gte: firstDayOfYear,
+          $lte: lastDayOfYear,
         },
       },
     },
@@ -479,6 +480,10 @@ const getTopSaleProduct = asyncHandler(async (req, res) => {
   ]);
   res.json(data);
 });
+const momo = asyncHandler(async (req, res) => {
+  console.log(req)
+  console.log(res)
+});
 module.exports = {
   createUser,
   loginUserCtrl,
@@ -495,7 +500,8 @@ module.exports = {
   author,
   getMonthIncome,
   getYearOrderCount,
-  getTotalCustomerInMonth,
-  getTotalProductInMonth,
+  getTotalCustomerInYear,
+  getTotalProductInYear,
   getTopSaleProduct,
+  momo
 };

@@ -148,7 +148,9 @@ const Dashboard = () => {
           <div>
             <p>Total customer</p>{' '}
             <p className="mb-0 fs-2">
-              {monthCustomer ? monthCustomer[0].totalCustomers : 0}
+              {monthCustomer?.length > 0
+                ? monthCustomer[0]?.totalCustomers
+                : '0'}
             </p>
           </div>
         </div>
@@ -162,7 +164,9 @@ const Dashboard = () => {
           <div>
             <p>Total proudct</p>{' '}
             <p className="mb-0 fs-2">
-              {monthProduct ? monthProduct[0]?.totalQuantitySold : 0}
+              {monthProduct?.length > 0
+                ? monthProduct[0]?.totalQuantitySold
+                : '0'}
             </p>
           </div>
         </div>
@@ -187,7 +191,7 @@ const Dashboard = () => {
                         product.productImage[0] && product.productImage[0].url
                       }
                       className="card-img-top"
-                      style={{height:'160px'}}
+                      style={{ height: '160px' }}
                       alt={product.productName}
                     />
                     <div className="card-body">
