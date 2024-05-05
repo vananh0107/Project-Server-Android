@@ -37,7 +37,7 @@ router.get('/year-order', authMiddleware, isAdmin, getYearOrderCount);
 router.get('/year-customer', authMiddleware, isAdmin, getTotalCustomerInYear);
 router.get('/year-product', authMiddleware, isAdmin, getTotalProductInYear);
 router.get('/top-product', authMiddleware, isAdmin, getTopSaleProduct);
-router.post('/momo',authMiddleware, momo);
+router.post('/momo', momo);
 router.delete(
   '/delete-product-cart/:id',
   authMiddleware,
