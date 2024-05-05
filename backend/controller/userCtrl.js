@@ -481,8 +481,9 @@ const getTopSaleProduct = asyncHandler(async (req, res) => {
   res.json(data);
 });
 const momo = asyncHandler(async (req, res) => {
-  console.log(req)
-  console.log(res)
+  console.log('req.body',req.body)
+  console.log('req.user',req.user)
+  console.log('res',res)
 });
 module.exports = {
   createUser,
