@@ -58,6 +58,10 @@ var orderSchema = new mongoose.Schema(
       type: String,
       default: 'Ordered',
     },
+    isPaid:{
+      type: String,
+      default: 'Chưa thanh toán',
+    }
   },
   {
     timestraps: true,

@@ -306,15 +306,28 @@ const getMonthIncome = asyncHandler(async (req, res) => {
     {
       $group: {
         _id: {
-          $month: '$paidAt',
+          month: { $month: '$paidAt' },
+          year: { $year: '$paidAt' },
         },
         amount: { $sum: '$totalPrice' },
         count: { $sum: 1 },
+        customers: { $addToSet: '$user' }, 
+        productsSold: { $sum: { $sum: '$orderItems.count' } } 
       },
     },
+    {
+      $project: {
+        _id: 1,
+        amount: 1,
+        count: 1,
+        totalCustomers: { $size: '$customers' },
+        productsSold: 1
+      }
+    }
   ]);
   res.json(data);
 });
+
 const getYearOrderCount = asyncHandler(async (req, res) => {
   const arrayMonth = [
     'January',
@@ -360,8 +373,8 @@ const getYearOrderCount = asyncHandler(async (req, res) => {
 });
 const getTotalCustomerInYear = asyncHandler(async (req, res) => {
   const today = new Date();
-  const firstDayOfYear = new Date(today.getFullYear(), 0, 1); // Lấy ngày đầu tiên của năm hiện tại
-  const lastDayOfYear = new Date(today.getFullYear(), 11, 31); // Lấy ngày cuối cùng của năm hiện tại
+  const firstDayOfYear = new Date(today.getFullYear(), 0, 1);
+  const lastDayOfYear = new Date(today.getFullYear(), 11, 31);
   const data = await Order.aggregate([
     {
       $match: {
@@ -389,9 +402,9 @@ const getTotalCustomerInYear = asyncHandler(async (req, res) => {
 });
 const getTotalProductInYear = asyncHandler(async (req, res) => {
   const today = new Date();
-  const firstDayOfYear = new Date(today.getFullYear(), 0, 1); // Lấy ngày đầu tiên của năm hiện tại
+  const firstDayOfYear = new Date(today.getFullYear(), 0, 1);
 
-  const lastDayOfYear = new Date(today.getFullYear(), 11, 31); // Lấy ngày cuối cùng của năm hiện tại
+  const lastDayOfYear = new Date(today.getFullYear(), 11, 31);
 
   const data = await Order.aggregate([
     {
@@ -427,8 +440,8 @@ const getTotalProductInYear = asyncHandler(async (req, res) => {
 
 const getTopSaleProduct = asyncHandler(async (req, res) => {
   const today = new Date();
-  const firstDayOfYear = new Date(today.getFullYear(), 0, 1); // Lấy ngày đầu tiên của năm hiện tại
-  const lastDayOfYear = new Date(today.getFullYear(), 11, 31); // Lấy ngày cuối cùng của năm hiện tại
+  const firstDayOfYear = new Date(today.getFullYear(), 0, 1); 
+  const lastDayOfYear = new Date(today.getFullYear(), 11, 31); 
   const data = await Order.aggregate([
     {
       $match: {
@@ -481,9 +494,21 @@ const getTopSaleProduct = asyncHandler(async (req, res) => {
   res.json(data);
 });
 const momo = asyncHandler(async (req, res) => {
-  console.log('req.body',req.body)
-  console.log('req.user',req.user)
-  console.log('res',res)
+  if (req.body.resultCode === 0) {
+    const orderId = req.body.orderId; 
+    const order = await Order.findByIdAndUpdate(
+      orderId,
+      {
+        isPaid: 'Đã thanh toán',
+      },
+      {
+        new: true,
+      }
+    );
+    res.status(200).json({ message: 'Thanh toán thành công' });
+  } else {
+    res.status(400).json({ message: 'Thanh toán không thành công' });
+  }
 });
 module.exports = {
   createUser,
