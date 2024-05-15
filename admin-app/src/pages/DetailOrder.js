@@ -29,8 +29,8 @@ const DetailOrder = () => {
       dispatch(getEnquiry(getEnqId));
     }, 100);
   };
-  const handleRemoveOrder = () => {
-    dispatch(deleteEnquiry(getEnqId));
+  const handleupdateAEnquiry = () => {
+    dispatch(updateAEnquiry(getEnqId));
     setTimeout(() => {
       navigate('/admin/enquiries');
       dispatch(getAllEnquiry());
@@ -102,6 +102,10 @@ const DetailOrder = () => {
           <p className="mb-0">{enqState?.totalPrice}</p>
         </div>
         <div className="d-flex align-items-center gap-3">
+          <h6 className="mb-0">Status paid:</h6>
+          <p className="mb-0">{enqState?.isPaid}</p>
+        </div>
+        <div className="d-flex align-items-center gap-3">
           <h6 className="mb-0">Status:</h6>
           <p className="mb-0">{enqState?.orderStatus}</p>
         </div>
@@ -127,7 +131,7 @@ const DetailOrder = () => {
         <button
           type="submit"
           className="btn btn-success border-0 rounded-3 my-5"
-          onClick={handleRemoveOrder}
+          onClick={handleupdateAEnquiry}
         >
           Update
         </button>

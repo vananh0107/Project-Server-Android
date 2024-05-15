@@ -6,7 +6,7 @@ const login = async (userData) => {
     : null;
   if (getUserFromLocalStorage) return getUserFromLocalStorage;
   const response = await axios.post(`${base_url}user/login`, userData);
-  if (response.data.role == 'admin') {
+  if (response.data.role == 'admin'||response.data.role == 'subadmin') {
     localStorage.setItem('user', JSON.stringify(response.data));
   }
   return response.data;
@@ -46,13 +46,13 @@ const getYearOrder = async () => {
   }
 };
 const getMonthCustomer = async () => {
-  const response = await axios.get(`${base_url}user/month-customer`, config);
+  const response = await axios.get(`${base_url}user/year-customer`, config);
   if (response.data) {
     return response.data;
   }
 };
 const getMonthProduct = async () => {
-  const response = await axios.get(`${base_url}user/month-product`, config);
+  const response = await axios.get(`${base_url}user/year-product`, config);
   if (response.data) {
     return response.data;
   }

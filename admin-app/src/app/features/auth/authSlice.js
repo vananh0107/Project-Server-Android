@@ -100,7 +100,7 @@ export const authSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.user = action.payload;
-        if (state.user.role == 'admin') {
+        if (state.user.role == 'admin'||state.user.role == 'subadmin') {
           state.isLoading = false;
           state.isError = false;
           state.isSuccess = true;

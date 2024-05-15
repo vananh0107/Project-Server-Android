@@ -39,8 +39,8 @@ const MainLayout = () => {
       <Sider trigger={null} collapsible collapsed={collapsed}>
         <div className="logo d-flex justify-content-center">
           <h2 className="text-white fs-5 py-3 mb-0">
-            <span className="sm-logo">Vanh dev</span>
-            <span className="lg-logo">VA</span>
+            <span className="sm-logo">Fruit Shop</span>
+            <span className="lg-logo">FS</span>
           </h2>
         </div>
         <Menu
@@ -140,15 +140,15 @@ const MainLayout = () => {
                     <img
                       width={42}
                       height={42}
-                      src="https://res.cloudinary.com/des2cvikr/image/upload/v1684370580/ljcgttw2aetctwcb2srk.jpg"
+                      src="https://starfinder-simulator.herokuapp.com/assets/root-ea6b56432024a3a2ca3596355b7754984ff9cf9f0fb2e9ac631a28ebef86cc89.png"
                       alt="images"
                     />
                   </div>
                   <div>
                     <h5 className="mb-0">
-                      {info.firstname + ' ' + info.lastname}
+                      {info?.firstname + ' ' + info?.lastname}
                     </h5>
-                    <p className="mb-0">{info.email}</p>
+                    <p className="mb-0">{info?.email}</p>
                   </div>
                 </div>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">

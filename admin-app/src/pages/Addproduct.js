@@ -11,6 +11,7 @@ import Dropzone from 'react-dropzone';
 import {
   addProd,
   getAllCategory,
+  getAllProduct,
   getProduct,
   resetState,
   updateProduct,
@@ -99,6 +100,7 @@ const Addproduct = () => {
       ? dispatch(updateProduct({ id: getProductId, data: formik.values }))
       : dispatch(addProd(formik.values));
     formik.resetForm();
+    dispatch(getAllProduct())
     navigate('/admin/product-list');
   };
   useEffect(() => {
