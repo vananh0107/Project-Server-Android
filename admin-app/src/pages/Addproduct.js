@@ -100,8 +100,10 @@ const Addproduct = () => {
       ? dispatch(updateProduct({ id: getProductId, data: formik.values }))
       : dispatch(addProd(formik.values));
     formik.resetForm();
-    dispatch(getAllProduct())
-    navigate('/admin/product-list');
+    // dispatch(getAllProduct())
+    setTimeout(() => {
+      navigate('/admin/product-list');
+    }, 300);
   };
   useEffect(() => {
     dispatch(resetStateUpload());
@@ -114,7 +116,6 @@ const Addproduct = () => {
       dispatch(getProduct(getProductId));
     }
   }, [getProductId]);
-
   const tagRender = (props) => {
     const { label, closable, onClose } = props;
     const onPreventMouseDown = (event) => {
@@ -135,7 +136,8 @@ const Addproduct = () => {
       </Tag>
     );
   };
-  const publicId = image ? image.publicId : imageUpload.publicId;
+  const publicId = image ? image?._id : imageUpload?._id;
+  console.log(image);
   return (
     <div>
       <h3 className="mb-4">
@@ -252,6 +254,8 @@ const Addproduct = () => {
                 )
                 <img src={image.url} alt="" width={200} height={200} />
               </div>
+            ) : image?.url ? (
+              <img src={image?.url} alt="" width={200} height={200} />
             ) : (
               <></>
             )}

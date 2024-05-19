@@ -139,6 +139,13 @@ const Dashboard = () => {
       },
     },
   };
+  console.log(
+    monthTotalData?.reduce(
+      (accumulator, currentValue) => accumulator + currentValue.amount,
+      0
+    ),
+    monthTotalData
+  );
   return (
     <div>
       <h3 className="mb-4">Dashboard</h3>
@@ -146,6 +153,7 @@ const Dashboard = () => {
         <div
           className="d-flex justify-content-between align-items-end flex-grow-1 bg-white p-4 rounded-3"
           onClick={() => handleSetChartData('income')}
+          style={{ width: '256px' }}
         >
           <div>
             {' '}
@@ -154,7 +162,14 @@ const Dashboard = () => {
           <div>
             <p>Total sells</p>{' '}
             <p className="mb-0 fs-2">
-              {monthTotalData ? monthTotalData[0]?.amount : 0} đ
+              {new Intl.NumberFormat('de-DE').format(
+                monthTotalData?.reduce(
+                  (accumulator, currentValue) =>
+                    accumulator + currentValue.amount,
+                  0
+                )
+              )}{' '}
+              đ
             </p>
           </div>
         </div>
@@ -169,7 +184,11 @@ const Dashboard = () => {
           <div>
             <p>Total orders</p>{' '}
             <p className="mb-0 fs-2">
-              {monthTotalData ? monthTotalData[0]?.count : 0}
+              {monthTotalData?.reduce(
+                  (accumulator, currentValue) =>
+                    accumulator + currentValue.count,
+                  0
+                )}
             </p>
           </div>
         </div>
@@ -237,9 +256,6 @@ const Dashboard = () => {
                     />
                     <div className="card-body">
                       <h5 className="card-title">{product.productName}</h5>
-                      {/* <p className="card-text">
-                        Price: {product.productPrice} đ
-                      </p> */}
                       <p className="card-text">
                         Total Sale: {product.totalSold}
                       </p>

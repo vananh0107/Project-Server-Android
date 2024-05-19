@@ -59,7 +59,7 @@ const Order = () => {
       name: listOrder[i].user.firstname + ' ' + listOrder[i].user.lastname,
       price: listOrder[i].totalPrice,
       product: (
-        <Link to={`/admin/order/${listOrder[i]._id}`}>View Order</Link>
+        <Link to={`/admin/orders/${listOrder[i]._id}`}>View Order</Link>
       ),
       date: new Date(listOrder[i].paidAt)
         .toLocaleDateString()
@@ -88,7 +88,7 @@ const Order = () => {
       ),
       action: (
         <>
-          <Link to={`${listOrder[i]._id}`} className="fs-3">
+          <Link to={`/admin/orders/${listOrder[i]._id}`} className="fs-3">
             <BiEdit />
           </Link>
           <button

@@ -19,6 +19,14 @@ const Addcat = () => {
     name: yup.string().required('Name is required'),
     image: yup.array().required('Images is required'),
   });
+  
+  const formik = useFormik({
+    initialValues: {
+      name: '',
+      image: '',
+    },
+    validationSchema: schema,
+  });
   const navigate = useNavigate();
   const location = useLocation();
   let getCatId = location.pathname.split('/')[3];
@@ -33,6 +41,26 @@ const Addcat = () => {
   useEffect(() => {
     formik.values.image = image;
   }, [image]);
+
+  useEffect(() => {
+    if (getCatId) {
+      formik.values.name = valueSingleCat?.name || '';
+      formik.values.image = valueSingleCat?.image || '';
+    } else {
+      document.getElementsByTagName('form')[0].reset();
+      formik.values = undefined;
+    }
+  }, [valueSingleCat]);
+  const handleSubmit = () => {
+    getCatId
+      ? dispatch(updateCategory({ id: getCatId, data: formik.values }))
+      : dispatch(addCategory(formik.values));
+    formik.resetForm();
+    formik.values = undefined;
+    setTimeout(() => { navigate('/admin/category-list');},300)
+   
+  };
+  const publicId = image ? image.publicId : imageUpload.publicId;
   useEffect(() => {
     dispatch(resetStateUpload());
     formik.resetForm();
@@ -43,21 +71,7 @@ const Addcat = () => {
       dispatch(getACategory(getCatId));
     }
   }, [getCatId]);
-  const formik = useFormik({
-    initialValues: {
-      name: '',
-      image: '',
-    },
-    validationSchema: schema,
-  });
-  const handleSubmit = () => {
-    getCatId
-      ? dispatch(updateCategory({ id: getCatId, data: formik.values }))
-      : dispatch(addCategory(formik.values));
-    formik.resetForm();
-  };
-  const publicId = image ? image.publicId : imageUpload.publicId;
-  console.log(image)
+  console.log(formik.values.name)
   return (
     <div>
       <h3 className="mb-4">{getCatId ? 'Edit' : 'Add'} Category</h3>
@@ -69,7 +83,7 @@ const Addcat = () => {
             name="name"
             onCh={formik.handleChange('name')}
             onBl={formik.handleBlur('name')}
-            val={formik.values.name}
+            val={formik.values.name||valueSingleCat?.name}
           />
           <div className="error">
             {formik.touched.name && formik.errors.name}

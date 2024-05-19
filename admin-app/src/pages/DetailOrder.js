@@ -32,9 +32,9 @@ const DetailOrder = () => {
   const handleupdateAEnquiry = () => {
     dispatch(updateAEnquiry(getEnqId));
     setTimeout(() => {
-      navigate('/admin/enquiries');
       dispatch(getAllEnquiry());
-    }, 200);
+      navigate(-1);
+    }, 300);
   };
   return (
     <div>
