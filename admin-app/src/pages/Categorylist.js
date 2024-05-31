@@ -12,7 +12,7 @@ import CustomModel from '../components/CustomModel';
 const Categorylist = () => {
   const columns = [
     {
-      title: 'No.',
+      title: 'Id',
       dataIndex: 'id',
     },
     {
@@ -92,7 +92,7 @@ const Categorylist = () => {
         performAction={() => {
           handleRemove(categoryId);
         }}
-        title="Are you sure want to delete this brand"
+        title="Are you sure want to delete this category"
       />
     </div>
   );

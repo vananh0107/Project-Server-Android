@@ -106,7 +106,7 @@ const Discountlist = () => {
         performAction={() => {
           handleRemove(couponId);
         }}
-        title="Are you sure want to delete this brand"
+        title="Are you sure want to delete this discount"
       />
     </div>
   );

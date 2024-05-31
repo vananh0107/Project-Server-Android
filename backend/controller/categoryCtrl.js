@@ -1,4 +1,5 @@
 const Category = require('../models/categoryModel');
+const Product = require('../models/productModel');
 const asyncHandler = require('express-async-handler');
 const createCategory = asyncHandler(async (req, res) => {
   try {
@@ -41,7 +42,8 @@ const updateCategory = asyncHandler(async (req, res) => {
 const deleteCategory = asyncHandler(async (req, res) => {
   const { id } = req.params;
   try {
-    const deleteCategory = await Category.findByIdAndDelete(id);
+    const rs=await Product.deleteMany({ category: id });
+    await Category.findByIdAndDelete(id);
     res.json('Delete successfully!!!');
   } catch (err) {
     throw new Error(err);

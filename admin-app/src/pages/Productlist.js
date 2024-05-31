@@ -3,6 +3,7 @@ import { Table } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   deleteProduct,
+  getAllCategory,
   getAllProduct,
 } from '../app/features/product/productSlice';
 import { Link } from 'react-router-dom';
@@ -48,6 +49,7 @@ const Productlist = () => {
   };
   const dispatch = useDispatch();
   const { listProduct } = useSelector((state) => state.product);
+  const { listCategory } = useSelector((state) => state.product);
   const dataTable = [];
   for (let i = 0; i < listProduct?.length; i++) {
     dataTable.push({
@@ -55,10 +57,12 @@ const Productlist = () => {
       name: listProduct[i].name,
       price: listProduct[i].price,
       quantity: listProduct[i].quantity,
-      category: listProduct[i].category,
+      category: listCategory?.find(
+        (item) => item._id == listProduct[i].category
+      ).name,
       description: listProduct[i].description,
       action: (
-        <div style={{display:"inline-flex"}}>
+        <div style={{ display: 'inline-flex' }}>
           <Link to={`${listProduct[i]._id}`} className="fs-3">
             <BiEdit />
           </Link>
@@ -76,6 +80,7 @@ const Productlist = () => {
   }
   useEffect(() => {
     dispatch(getAllProduct());
+    dispatch(getAllCategory());
   }, []);
   const [open, setOpen] = useState(false);
   const [brandId, setBrandId] = useState('');
@@ -109,7 +114,7 @@ const Productlist = () => {
         performAction={() => {
           handleRemove(brandId);
         }}
-        title="Are you sure want to delete this brand"
+        title="Are you sure want to delete this product"
       />
     </div>
   );

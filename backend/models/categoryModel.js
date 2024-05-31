@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Product = require('./productModel');
 const ImageSchema = new mongoose.Schema({
   url: String,
   publicId: String
@@ -16,5 +17,4 @@ var categorySchema = new mongoose.Schema(
     timestamps: true,
   }
 );
-
 module.exports = mongoose.model('Category', categorySchema);

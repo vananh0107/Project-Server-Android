@@ -96,6 +96,7 @@ const Addproduct = () => {
     }
   }, [valueProduct]);
   const handleSubmit = () => {
+    formik.values.image = image;
     getProductId
       ? dispatch(updateProduct({ id: getProductId, data: formik.values }))
       : dispatch(addProd(formik.values));
@@ -137,7 +138,6 @@ const Addproduct = () => {
     );
   };
   const publicId = image ? image?._id : imageUpload?._id;
-  console.log(image);
   return (
     <div>
       <h3 className="mb-4">
@@ -255,7 +255,23 @@ const Addproduct = () => {
                 <img src={image.url} alt="" width={200} height={200} />
               </div>
             ) : image?.url ? (
-              <img src={image?.url} alt="" width={200} height={200} />
+              <div className="position-relative">
+                <button
+                  onClick={() => {
+                    image = null;
+                    dispatch(
+                      deleteImg({
+                        id: publicId,
+                      })
+                    );
+                  }}
+                  className="btn-close position-absolute"
+                  style={{ top: '10px', right: '10px' }}
+                  type="button"
+                ></button>
+                )
+                <img src={image.url} alt="" width={200} height={200} />
+              </div>
             ) : (
               <></>
             )}

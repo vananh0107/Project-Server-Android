@@ -139,13 +139,6 @@ const Dashboard = () => {
       },
     },
   };
-  console.log(
-    monthTotalData?.reduce(
-      (accumulator, currentValue) => accumulator + currentValue.amount,
-      0
-    ),
-    monthTotalData
-  );
   return (
     <div>
       <h3 className="mb-4">Dashboard</h3>

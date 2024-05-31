@@ -136,7 +136,7 @@ const Enquiries = () => {
         performAction={() => {
           handleRemove(enqId);
         }}
-        title="Are you sure want to delete this brand"
+        title="Are you sure want to delete this order"
       />
     </div>
   );
